@@ -1,14 +1,14 @@
 pipeline {
-    agent any
-      environment {
+    //agent any
+     // environment {
         
-    registry = "thourayalouati/docker-spring-boot"
+    //registry = "thourayalouati/docker-spring-boot"
     
-    registryCredential = 'dockerHub'
+    //registryCredential = 'dockerHub'
     
-    dockerImage = ''
+    //dockerImage = ''
     
-    }
+    //}
   stages{
   /*    stage('Initialize')
     {
