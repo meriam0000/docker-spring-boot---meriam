@@ -67,12 +67,6 @@
 <artifactId>maven-surefire-plugin</artifactId>
 <version>2.22.1</version>
 </plugin>
-
-TP1
-
-17
- Configurer le pom.xml comme suit.
-
 <plugin>
 <artifactId>maven-jar-plugin</artifactId>
 <version>3.0.2</version>
