@@ -11,7 +11,7 @@
 	<groupId>tn.esprit.spring</groupId>
 	<artifactId>docker-spring-boot</artifactId>
 	<version>0.0.3-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>docker-spring-boot</name>
 	<description>docker-spring-boot</description>
 
