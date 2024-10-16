@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: my-spring-boot-app
-        image: thouraya/my-spring-boot-app:latest  # Remplacez par l'image de votre application
+        image: thourayalouati/docker-spring-boot:latest  # Assurez-vous que le nom est correct
         ports:
-        - containerPort: 8080  # Remplacez par le port que votre application Spring Boot écoute
+        - containerPort: 8080  # Utilisez le port sur lequel votre application écoute
