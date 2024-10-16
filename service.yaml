@@ -4,9 +4,9 @@ metadata:
   name: my-spring-boot-service
 spec:
   selector:
-    app: my-spring-boot-app
+    app: my-spring-boot-app  # Doit correspondre au label de votre déploiement
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 8080  # Remplacez par le port que votre application écoute
+      targetPort: 8080  # Doit correspondre au port que votre application écoute
   type: LoadBalancer
