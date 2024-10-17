@@ -5,7 +5,7 @@ metadata:
 spec:
   type: NodePort
   selector:
-    app: spring-boot-app # Assurez-vous que cette étiquette correspond à votre déploiement
+    app: my-spring-boot-app
   ports:
     - protocol: TCP
       port: 8083           # Port sur lequel ton application écoute dans le conteneur
