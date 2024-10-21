@@ -1,10 +1,10 @@
 provider "aws" {
-  region = "us-west-2"  # Change cette région selon tes besoins
+  region = "us-east-1"  # Changer la région à us-east-1
 }
 
 resource "aws_eks_cluster" "my_cluster" {
-  name     = "my-cluster"
-  role_arn = "arn:aws:iam::YOUR_ACCOUNT_ID:role/YOUR_EKS_ROLE" # Remplace par ton ARN de rôle
+  name     = "mykubernetes"  # Nom du cluster
+  role_arn = "arn:aws:iam::YOUR_ACCOUNT_ID:role/YOUR_EKS_ROLE"  # Remplace par ton ARN de rôle
 
   vpc_config {
     subnet_ids = ["subnet-12345678", "subnet-87654321"]  # Remplace par tes IDs de sous-réseaux
