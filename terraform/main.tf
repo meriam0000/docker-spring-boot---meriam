@@ -5,7 +5,7 @@ provider "aws" {
 resource "aws_eks_cluster" "my_cluster" {
   name     = var.cluster_name
   role_arn = var.role_arn
-  version  = "1.21"  # Version de Kubernetes
+  version  = "1.30"  # Version de Kubernetes
 
   vpc_config {
     subnet_ids          = var.subnet_ids
