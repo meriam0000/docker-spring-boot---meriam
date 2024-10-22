@@ -9,7 +9,7 @@ resource "aws_eks_cluster" "my_cluster" {
 
   vpc_config {
     subnet_ids          = var.subnet_ids
-    security_group_ids  = ["sg-0123456789abcdef0"]  # Remplace par le groupe de sécurité correct
+    security_group_ids = ["sg-01156caafc1ff73fb"]  # Utilisation du groupe de sécurité par défaut
   }
 }
 
