@@ -5,11 +5,43 @@ provider "aws" {
 resource "aws_eks_cluster" "my_cluster" {
   name     = var.cluster_name
   role_arn = var.role_arn
-  version  = "1.30"  # Version de Kubernetes
+  version  = "1.30"
 
   vpc_config {
     subnet_ids          = var.subnet_ids
-    security_group_ids = ["sg-01156caafc1ff73fb"]  # Utilisation du groupe de sécurité par défaut
+    security_group_ids  = [aws_security_group.eks_cluster_sg.id]  # Utilisation du groupe de sécurité ci-dessous
+  }
+}
+
+resource "aws_security_group" "eks_cluster_sg" {
+  name        = "eks-cluster-sg-${var.cluster_name}"
+  description = "Groupe de sécurité pour le cluster EKS ${var.cluster_name}"
+  vpc_id      = var.vpc_id
+
+  # Règles pour autoriser le trafic entrant pour ton application
+  ingress {
+    from_port   = 8083
+    to_port     = 8083
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]  # Autorise tout le monde à accéder à l'application via le port 8083
+  }
+
+  ingress {
+    from_port   = 30000
+    to_port     = 30000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]  # Autorise l'accès sur le port 30000
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"  # Autorise tout le trafic sortant
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "eks-cluster-sg-${var.cluster_name}"
   }
 }
 
