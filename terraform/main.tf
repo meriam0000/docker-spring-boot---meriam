@@ -15,7 +15,7 @@ resource "aws_eks_cluster" "my_cluster" {
 
 resource "aws_security_group" "eks_cluster_sg" {
   name        = "eks-cluster-sg-${var.cluster_name}"
-  description = "Groupe de sécurité pour le cluster EKS ${var.cluster_name}"
+  description = "Security group for EKS cluster mykubernetes ${var.cluster_name}"
   vpc_id      = var.vpc_id
 
   # Règles pour autoriser le trafic entrant pour ton application
