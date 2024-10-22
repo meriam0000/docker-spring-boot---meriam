@@ -11,9 +11,11 @@ variable "cluster_name" {
 variable "subnet_ids" {
   description = "IDs des sous-réseaux"
   type        = list(string)
+  default     = ["subnet-075e0dd45da90bdb8", "subnet-0114974e6dbd8217e"]  # Ajoutez des valeurs par défaut si nécessaire
 }
 
 variable "role_arn" {
   description = "ARN du rôle IAM pour EKS"
   type        = string
+  default     = "arn:aws:iam::744983671605:role/LabRole"  # Ajoutez une valeur par défaut si nécessaire
 }
