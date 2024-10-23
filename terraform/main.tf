@@ -82,7 +82,6 @@ resource "aws_eks_node_group" "my_node_group" {
   node_group_name = "noeud1"
   node_role_arn   = var.role_arn
   subnet_ids      = var.subnet_ids
-  node_security_group_ids = [aws_security_group.eks_worker_sg.id]  # Ajout du groupe de sécurité des nœuds
 
   scaling_config {
     desired_size = 2
