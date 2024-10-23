@@ -2,6 +2,10 @@ provider "aws" {
   region = var.aws_region
 }
 
+resource "aws_vpc" "my_vpc" {
+  cidr_block = var.vpc_cidr
+}
+
 resource "aws_eks_cluster" "my_cluster" {
   name     = var.cluster_name
   role_arn = var.role_arn
@@ -18,7 +22,6 @@ resource "aws_security_group" "eks_cluster_sg" {
   description = "Security group for EKS cluster ${var.cluster_name}"
   vpc_id      = var.vpc_id
 
-  # Règles pour autoriser le trafic entrant pour l'application
   ingress {
     from_port   = 8083
     to_port     = 8083
@@ -50,19 +53,19 @@ resource "aws_security_group" "eks_worker_sg" {
   description = "Security group for EKS worker nodes ${var.cluster_name}"
   vpc_id      = var.vpc_id
 
-  # Règles pour autoriser le trafic entrant pour les nœuds de travail
+  # Règles pour autoriser le trafic entrant pour l'application
   ingress {
     from_port   = 8083
     to_port     = 8083
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  # Ajustez selon vos besoins de sécurité
+    cidr_blocks = ["0.0.0.0/0"]  # Autorise tout le monde à accéder à l'application via le port 8083
   }
 
   ingress {
     from_port   = 30000
     to_port     = 30000
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  # Ajustez selon vos besoins de sécurité
+    cidr_blocks = ["0.0.0.0/0"]  # Autorise l'accès sur le port 30000
   }
 
   egress {
@@ -82,6 +85,7 @@ resource "aws_eks_node_group" "my_node_group" {
   node_group_name = "noeud1"
   node_role_arn   = var.role_arn
   subnet_ids      = var.subnet_ids
+  node_security_group_ids = [aws_security_group.eks_worker_sg.id]  # Ajout du groupe de sécurité des nœuds
 
   scaling_config {
     desired_size = 2
