@@ -6,21 +6,10 @@ resource "aws_vpc" "my_vpc" {
   cidr_block = var.vpc_cidr
 }
 
-resource "aws_eks_cluster" "my_cluster" {
-  name     = var.cluster_name
-  role_arn = var.role_arn
-  version  = "1.30"
-
-  vpc_config {
-    subnet_ids         = var.subnet_ids
-    security_group_ids = [aws_security_group.eks_cluster_sg.id]
-  }
-}
-
 resource "aws_security_group" "eks_cluster_sg" {
   name        = "eks-cluster-sg-${var.cluster_name}"
   description = "Security group for EKS cluster ${var.cluster_name}"
-  vpc_id      = aws_vpc.my_vpc.id
+  vpc_id      = aws_vpc.my_vpc.id  # Assurez-vous que le groupe de sécurité est dans le même VPC
 
   ingress {
     from_port   = 8083
@@ -51,7 +40,7 @@ resource "aws_security_group" "eks_cluster_sg" {
 resource "aws_security_group" "eks_worker_sg" {
   name        = "eks-worker-sg-${var.cluster_name}"
   description = "Security group for EKS worker nodes ${var.cluster_name}"
-  vpc_id      = aws_vpc.my_vpc.id
+  vpc_id      = aws_vpc.my_vpc.id  # Assurez-vous que le groupe de sécurité est dans le même VPC
 
   ingress {
     from_port   = 8083
@@ -79,6 +68,17 @@ resource "aws_security_group" "eks_worker_sg" {
   }
 }
 
+resource "aws_eks_cluster" "my_cluster" {
+  name     = var.cluster_name
+  role_arn = var.role_arn
+  version  = "1.30"
+
+  vpc_config {
+    subnet_ids         = var.subnet_ids
+    security_group_ids = [aws_security_group.eks_cluster_sg.id]
+  }
+}
+
 resource "aws_eks_node_group" "my_node_group" {
   cluster_name    = aws_eks_cluster.my_cluster.name
   node_group_name = "noeud1"
@@ -92,4 +92,5 @@ resource "aws_eks_node_group" "my_node_group" {
   }
 
   # Les groupes de sécurité sont gérés par la configuration EKS
+  # S'il n'y a pas de configuration supplémentaire pour les groupes de sécurité des nœuds, ce champ peut être omis.
 }
