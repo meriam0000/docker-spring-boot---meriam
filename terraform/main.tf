@@ -51,8 +51,6 @@ resource "aws_eks_node_group" "my_node_group" {
   node_role_arn   = var.role_arn
   subnet_ids      = var.subnet_ids
 
-   # Ajoutez cette ligne pour associer le groupe de sécurité aux instances EC2
-  additional_security_groups = [aws_security_group.eks_cluster_sg.id]
 
   scaling_config {
     desired_size = 2
