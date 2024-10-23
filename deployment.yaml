@@ -18,4 +18,4 @@ spec:
       - name: my-spring-boot-app
         image: thourayalouati/docker-spring-boot:latest  # Assurez-vous que le nom est correct
         ports:
-        - containerPort: 8080  # Utilisez le port sur lequel votre application écoute
+        - containerPort: 8083  # Utilisez le port sur lequel votre application écoute
