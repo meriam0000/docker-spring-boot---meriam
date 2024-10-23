@@ -20,7 +20,7 @@ resource "aws_eks_cluster" "my_cluster" {
 resource "aws_security_group" "eks_cluster_sg" {
   name        = "eks-cluster-sg-${var.cluster_name}"
   description = "Security group for EKS cluster ${var.cluster_name}"
-  vpc_id      = var.vpc_id
+  vpc_id      = aws_vpc.my_vpc.id
 
   ingress {
     from_port   = 8083
@@ -51,7 +51,7 @@ resource "aws_security_group" "eks_cluster_sg" {
 resource "aws_security_group" "eks_worker_sg" {
   name        = "eks-worker-sg-${var.cluster_name}"
   description = "Security group for EKS worker nodes ${var.cluster_name}"
-  vpc_id      = var.vpc_id
+  vpc_id      = aws_vpc.my_vpc.id
 
   ingress {
     from_port   = 8083
@@ -91,7 +91,5 @@ resource "aws_eks_node_group" "my_node_group" {
     min_size     = 1
   }
 
-  resources {
-    security_group_ids = [aws_security_group.eks_worker_sg.id]
-  }
+  # Les groupes de sécurité sont gérés par la configuration EKS
 }
