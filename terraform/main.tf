@@ -2,14 +2,44 @@ provider "aws" {
   region = var.aws_region
 }
 
+variable "aws_region" {
+  description = "La région AWS"
+  type        = string
+  default     = "us-east-1"  # Région mise à jour
+}
+
+variable "cluster_name" {
+  description = "Nom du cluster EKS"
+  type        = string
+  default     = "mykubernetes"  # Nom du cluster mis à jour
+}
+
+variable "subnet_ids" {
+  description = "IDs des sous-réseaux"
+  type        = list(string)
+  default     = ["subnet-075e0dd45da90bdb8", "subnet-0114974e6dbd8217e"]  # Valeurs par défaut
+}
+
+variable "role_arn" {
+  description = "ARN du rôle IAM pour EKS"
+  type        = string
+  default     = "arn:aws:iam::744983671605:role/LabRole"  # Valeur par défaut
+}
+
+variable "vpc_id" {
+  description = "L'ID du VPC pour le cluster EKS"
+  type        = string
+  default     = "vpc-04c984733bc5b455e"  # Remplacez par votre ID de VPC réel
+}
+
 resource "aws_vpc" "my_vpc" {
-  cidr_block = var.vpc_cidr
+  cidr_block = "10.0.0.0/16"  # Assurez-vous que cela correspond à vos besoins
 }
 
 resource "aws_security_group" "eks_cluster_sg" {
   name        = "eks-cluster-sg-${var.cluster_name}"
   description = "Security group for EKS cluster ${var.cluster_name}"
-  vpc_id      = aws_vpc.my_vpc.id  # Vérifiez que le VPC est correct
+  vpc_id      = var.vpc_id  # Utilisez l'ID de VPC défini dans les variables
 
   ingress {
     from_port   = 8083
@@ -40,7 +70,7 @@ resource "aws_security_group" "eks_cluster_sg" {
 resource "aws_security_group" "eks_worker_sg" {
   name        = "eks-worker-sg-${var.cluster_name}"
   description = "Security group for EKS worker nodes ${var.cluster_name}"
-  vpc_id      = aws_vpc.my_vpc.id  # Vérifiez que le VPC est correct
+  vpc_id      = var.vpc_id  # Utilisez l'ID de VPC défini dans les variables
 
   ingress {
     from_port   = 8083
@@ -75,7 +105,7 @@ resource "aws_eks_cluster" "my_cluster" {
 
   vpc_config {
     subnet_ids         = var.subnet_ids
-    security_group_ids = [aws_security_group.eks_cluster_sg.id]  # Vérifiez que ce groupe de sécurité est dans le bon VPC
+    security_group_ids = [aws_security_group.eks_cluster_sg.id]
   }
 }
 
