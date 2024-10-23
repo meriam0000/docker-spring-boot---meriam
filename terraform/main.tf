@@ -13,7 +13,7 @@ resource "aws_eks_cluster" "my_cluster" {
 
   vpc_config {
     subnet_ids         = var.subnet_ids
-    security_group_ids = [aws_security_group.eks_cluster_sg.id]  # Utilisation du groupe de sécurité ci-dessous
+    security_group_ids = [aws_security_group.eks_cluster_sg.id]
   }
 }
 
@@ -26,20 +26,20 @@ resource "aws_security_group" "eks_cluster_sg" {
     from_port   = 8083
     to_port     = 8083
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  # Autorise tout le monde à accéder à l'application via le port 8083
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {
     from_port   = 30000
     to_port     = 30000
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  # Autorise l'accès sur le port 30000
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
     from_port   = 0
     to_port     = 0
-    protocol    = "-1"  # Autorise tout le trafic sortant
+    protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
@@ -53,25 +53,24 @@ resource "aws_security_group" "eks_worker_sg" {
   description = "Security group for EKS worker nodes ${var.cluster_name}"
   vpc_id      = var.vpc_id
 
-  # Règles pour autoriser le trafic entrant pour l'application
   ingress {
     from_port   = 8083
     to_port     = 8083
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  # Autorise tout le monde à accéder à l'application via le port 8083
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {
     from_port   = 30000
     to_port     = 30000
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  # Autorise l'accès sur le port 30000
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
     from_port   = 0
     to_port     = 0
-    protocol    = "-1"  # Autorise tout le trafic sortant
+    protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
@@ -85,11 +84,14 @@ resource "aws_eks_node_group" "my_node_group" {
   node_group_name = "noeud1"
   node_role_arn   = var.role_arn
   subnet_ids      = var.subnet_ids
-  node_security_group_ids = [aws_security_group.eks_worker_sg.id]  # Ajout du groupe de sécurité des nœuds
 
   scaling_config {
     desired_size = 2
     max_size     = 3
     min_size     = 1
+  }
+
+  resources {
+    security_group_ids = [aws_security_group.eks_worker_sg.id]
   }
 }
